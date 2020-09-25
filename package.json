@@ -1,0 +1,17 @@
+{
+    "name": "node-udf",
+    "version": "0.0.1",
+    "description": "imdkbj private nodejs udf",
+    "main": "node-udf.js",
+    "private": true,
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "imdkbj",
+    "license": "ISC",
+    "dependencies": {
+        "node-ratify": "^1.1.32",
+        "mysql": "^2.18.1",
+        "crypto-random-string": "^3.3.0"
+    }
+}

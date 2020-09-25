@@ -1,5 +1,1 @@
-const common = require('./common');
-
-module.exports = {
-	common
-}
+udf.delay = (ms) => new Promise((res) => setTimeout(res, ms));

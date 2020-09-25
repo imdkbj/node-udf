@@ -1,5 +1,3 @@
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+var common = exports;
 
-module.export = {
-	delay
-}
+common.delay = (ms) => new Promise((res) => setTimeout(res, ms));

@@ -21,7 +21,7 @@ udf.delay = (ms) => new Promise((res) => setTimeout(res, ms));
 //  It will have 6 arguments.
 // ************************************************************************************************
 
-exports.convertToTable = (inputData, header, isObj, isArrayReturn, seperator, decimalLengths) => require("./string_udf/table").arr2Table(inputData, header, isObj, isArrayReturn, seperator, decimalLengths);
+exports.convertToTable = (inputData, header, isObj, isArrayReturn, seperator, decimalLengths, stringSplitter) => require("./string_udf/table").arr2Table(inputData, header, isObj, isArrayReturn, seperator, decimalLengths, stringSplitter);
 
 // ************************************************************************************************
 // stringToJSON

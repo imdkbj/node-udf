@@ -41,14 +41,15 @@ const max_string_lengths = (arr, total_cols) => {
     return col_max;
 }
 
-const createTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0) => {
-    let array = isObj ? convert_obj_arr(array_for_table) : parse_copy(array_for_table);
-    if (array.length == 0)
-        return 'Invalid object passed in 2nd argument.';
+const createTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",") => {
+    let array = isObj ? convert_obj_arr(array_for_table) : Array.isArray(array_for_table) ? parse_copy(array_for_table) : array_for_table.split(stringSplitter);
+    if (array.length == 1)
+        return 'Invalid data passed in 1st argument.';
 
     //get each col length
     let col_length = JSON.parse(JSON.stringify(array));
     let total_cols = col_length[0].length;
+    if (total_cols == 1) return "Input is invalid for table conversion."
 
     //negative values arr
     let col_negative = [...get_negative(col_length, total_cols)];

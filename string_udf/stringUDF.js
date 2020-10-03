@@ -20,36 +20,34 @@ exports.insertToArray = (arr, index, newItem) => [
     ...arr.slice(index)
 ]
 
-function ProperCase(text) {
-    if (text.length > 0)
-        return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-    else {
-        return " ";
-    }
-}
-
-function isValidMobile(inputtext) {
-    var regex = /^[6789]\d{9}$/;
-    if (inputtext.match(regex)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function isValidURL(string) {
-    var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g);
-    return (res !== null)
-};
-
 exports.alphanumeric = (text, isSpaceAllowed = false, isAlphaAllowed = true, isNumericAllowed = true, allowedChars = null) => {
-    var isValid = false;
-    isValid = isSpaceAllowed ? (/ /g).test(text) : isValid;
-    isValid = isAlphaAllowed ? (/^[A-Za-z]+$/).test(text) : isValid;
-    isValid = isNumericAllowed ? (/^[1-9]+$/).test(text) : isValid;
-    isValid = allowedChars == null ? isValid : new RegExp(`\[${allowedChars}\]\+\$`).test(text);
+    var regex = "";
+
+    regex = isSpaceAllowed ? regex += " " : regex;
+    regex = isAlphaAllowed ? regex += 'A-Za-z' : regex;
+    regex = isNumericAllowed ? regex += '1-9' : regex;
+    regex = allowedChars == null ? regex : regex += allowedChars;
+    if (regex == "") return false;
+
+    let isValid = new RegExp(`\[${regex}\]\+\$`).test(text);
     return isValid;
 }
 
 exports.to_Buffer = (str) => Buffer.from(str).toString("base64");
 exports.to_STR = (str) => Buffer.from(str, 'base64').toString("utf8");
+
+exports.proper_Case = (text) => {
+    let output = text.length > 0 ? text.charAt(0).toUpperCase() + text.substr(1).toLowerCase() : " ";
+    return output;
+}
+
+exports.is_ValidMobile = (mobile) => (/^[6789]\d{9}$/).test(mobile);
+
+exports.is_ValidURL = (string, isOnline = false) => {
+    var regex = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g);
+    let isValid = regex.test(mobile);
+    if (!isOnline || !isValid) return isValid;
+}
+
+const arrayColumn = (arr, n) => arr.map((x) => x[n]);
+const rpt = (n, txt = ' ') => txt.repeat(n);

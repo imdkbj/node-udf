@@ -15,6 +15,15 @@ let stringUDFs = require("./string_udf/stringUDF");
 udf.delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 // ************************************************************************************************
+// convertToTable
+//
+//  This will convert string/object/array into a tabular format.
+//  It will have 6 arguments.
+// ************************************************************************************************
+
+exports.convertToTable = (inputData, header, isObj, isArrayReturn, seperator, decimalLengths) => require("./string_udf/table").arr2Table(inputData, header, isObj, isArrayReturn, seperator, decimalLengths);
+
+// ************************************************************************************************
 // stringToJSON
 //
 // This will convert a text string to a json based on custom delimeter and string break.
@@ -61,7 +70,7 @@ udf.isAlphaNumeric = (text, isSpaceAllowed, isAlphaAllowed, isNumericAllowed, al
 // It will have only one argument.
 
 //  Examples:
-//      toBuffer('abc');    //Output will be - 
+//      toBuffer('abc');    //Output will be - YWJj
 // ************************************************************************************************
 udf.toBuffer = (str) => stringUDFs.to_Buffer(str);
 
@@ -75,6 +84,50 @@ udf.toBuffer = (str) => stringUDFs.to_Buffer(str);
 //      toSTR('abc');    //Output will be - abc
 // ************************************************************************************************
 udf.toSTR = (str) => stringUDFs.to_STR(str);
+
+// ************************************************************************************************
+// properCase
+//
+// This will convert string to Propercase
+// It will have only one argument.
+
+//  Examples:
+//      properCase('abc');    //Output will be - Abc
+// ************************************************************************************************
+udf.properCase = (text) => stringUDFs.proper_Case(text);
+
+// ************************************************************************************************
+// is_ValidMobile
+//
+// This will check if input is a 10 digit mobile number
+// It will have only one argument.
+
+//  Examples:
+//      isValidMobile('1234567890');    //Output will be - false
+//      isValidMobile('9999999999');    //Output will be - true
+
+// ************************************************************************************************
+udf.isValidMobile = (mobile) => stringUDFs.is_ValidMobile(mobile);
+
+// ************************************************************************************************
+// isValidURL
+//
+// This will check if input is a url string
+// It will have two argument.
+//      1. Pass the text which need to validate.
+//      2. Optional : isOnline >> default false, if true then will also check the online by making a POST request.
+
+//  Examples:
+//      isValidURL('zbkjbxzk');    //Output will be - false
+//      isValidMobile('https://google.com');    //Output will be - true
+//      isValidMobile('google.com');    //Output will be - true
+//      isValidMobile('www.google.com');    //Output will be - true
+//      isValidMobile('https://google.com/abc');    //Output will be - true
+//      isValidURL('zbkjbxzk',true);    //Output will be - false
+//      isValidMobile('www.google.com',true);    //Output will be - true
+
+// ************************************************************************************************
+udf.isValidURL = (mobile, isOnline) => stringUDFs.is_ValidURL(mobile, isOnline);
 
 // ************************************************************************************************
 // insertInToArray

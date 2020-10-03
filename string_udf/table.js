@@ -1,7 +1,8 @@
 const arrayColumn = (arr, n) => arr.map((x) => x[n]);
 const rpt = (n, txt = ' ') => txt.repeat(n);
-const lengths = (val, isCheckDecimals, declength) => {
-    let _txt = isCheckDecimals && typeof(val) == 'number' && declength > 0 ? val.toFixed(declength) : val;
+
+const lengths = (val, decimalLengths) => {
+    let _txt = typeof (val) == 'number' && decimalLengths > 0 ? val.toFixed(decimalLengths) : val;
     return _txt.toString().length;
 }
 
@@ -40,10 +41,10 @@ const max_string_lengths = (arr, total_cols) => {
     return col_max;
 }
 
-const createTable = (isObj = true, isArrayReturn = false, hdr, array_for_table, sep = '|', isCheckDecimals = false, declength = 1) => {
+const createTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0) => {
     let array = isObj ? convert_obj_arr(array_for_table) : parse_copy(array_for_table);
     if (array.length == 0)
-        return 'No data found.';
+        return 'Invalid object passed in 2nd argument.';
 
     //get each col length
     let col_length = JSON.parse(JSON.stringify(array));
@@ -58,14 +59,14 @@ const createTable = (isObj = true, isArrayReturn = false, hdr, array_for_table, 
     //find max each col
     if (hdr != null)
         col_length.push(hdr);
-    let col_length_arr = col_length.map((r) => r.map((c) => lengths(c, isCheckDecimals, declength)));
+    let col_length_arr = col_length.map((r) => r.map((c) => lengths(c, decimalLengths)));
     let col_max = [...max_string_lengths(col_length_arr, total_cols)];
 
     const format_row = (arrayValue, index) => {
         var rowTxt = arrayValue;
         //check decimal
-        if (isCheckDecimals && typeof(rowTxt) == 'number')
-            rowTxt = rowTxt.toFixed(declength);
+        if (decimalLengths > 0 && typeof (rowTxt) == 'number')
+            rowTxt = rowTxt.toFixed(decimalLengths);
 
         if (index == total_cols - 1)
             return rowTxt;
@@ -76,7 +77,7 @@ const createTable = (isObj = true, isArrayReturn = false, hdr, array_for_table, 
         //add extra space if col have negative and postive length>negative
         let positive_buffer = col_negative[index] < 0 && col_max[index] >= col_negative[index].toString().length && col_positive[index].toString().length >= col_negative[index].toString().length
 
-            var _spaces = (-isNegative + positive_buffer + col_max[index] - lengths(rowTxt, isCheckDecimals, declength)) || 0;
+        var _spaces = (-isNegative + positive_buffer + col_max[index] - lengths(rowTxt, decimalLengths)) || 0;
         _spaces = _spaces < 0 ? 0 : _spaces;
         let _txt = rowTxt + rpt(_spaces);
 

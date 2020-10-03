@@ -29,7 +29,7 @@ udf.delay = (ms) => new Promise((res) => setTimeout(res, ms));
 //      stringToJSON(str,';','-'); //str ='fname-deepak;lname-kumar' , Output will be - {fname:'deepak',lname:'kumar'}
 
 // ************************************************************************************************
-udf.stringToJSON = (...arg) => stringUDFs.string2JSON(...arg);
+udf.stringToJSON = (userinput, del, txtSep) => stringUDFs.string2JSON(userinput, del, txtSep);
 
 // ************************************************************************************************
 // isAlphaNumeric
@@ -52,7 +52,7 @@ udf.stringToJSON = (...arg) => stringUDFs.string2JSON(...arg);
 //      isAlphaNumeric('abcd xtyz5245/',true,true,true,'/');  //Output will be - true;
 
 // ************************************************************************************************
-udf.isAlphaNumeric = (text, isSpaceAllowed, isAlphaAllowed, isNumericAllowed, allowedChars) => stringUDFs.alphanumeric(...arg);
+udf.isAlphaNumeric = (text, isSpaceAllowed, isAlphaAllowed, isNumericAllowed, allowedChars) => stringUDFs.alphanumeric(text, isSpaceAllowed, isAlphaAllowed, isNumericAllowed, allowedChars);
 
 // ************************************************************************************************
 // toBuffer
@@ -63,7 +63,7 @@ udf.isAlphaNumeric = (text, isSpaceAllowed, isAlphaAllowed, isNumericAllowed, al
 //  Examples:
 //      toBuffer('abc');    //Output will be - 
 // ************************************************************************************************
-udf.toBuffer = (str) => stringUDFs.to_Buffer(...arg);
+udf.toBuffer = (str) => stringUDFs.to_Buffer(str);
 
 // ************************************************************************************************
 // toSTR
@@ -74,22 +74,22 @@ udf.toBuffer = (str) => stringUDFs.to_Buffer(...arg);
 //  Examples:
 //      toSTR('abc');    //Output will be - abc
 // ************************************************************************************************
-udf.toSTR = (str) => stringUDFs.to_STR(...arg);
+udf.toSTR = (str) => stringUDFs.to_STR(str);
 
 // ************************************************************************************************
-// insertToArray
+// insertInToArray
 //
 // Insert a new value in array.
 // It will have three arguments.
 //      1. Pass the array.
-//      2. index >> Where new value have to insert.
+//      2. index >> Where new value have to insert.first index will be 0
 //      3. newItem >> The new value.
 // Examples:
-//      insertToArray([0,1,2,4,5],4,3); //Output will be [0,1,2,3,4,5]
-//      insertToArray(['A','C','D'],2,'B'); //Output will be ['A','B','C','D']
+//      insertInToArray([0,1,2,4,5],3,3); //Output will be [0,1,2,3,4,5]
+//      insertInToArray(['A','C','D'],1,'B'); //Output will be ['A','B','C','D']
 
 // ************************************************************************************************
-udf.insertInToArray = (...arg) => stringUDFs.insertToArray(...arg);
+udf.insertInToArray = (arr, index, newItem) => stringUDFs.insertToArray(arr, index, newItem);
 
 // ************************************************************************************************
 // validateOrderInput
@@ -103,7 +103,7 @@ udf.insertInToArray = (...arg) => stringUDFs.insertToArray(...arg);
 // validateOrderInput(str); //Here order type will not be validated.
 
 // ************************************************************************************************
-udf.validateOrderInput = (...arg) => require("./algo/validation/validation").validateInput(...arg);
+udf.validateOrderInput = (input_str_obj, type_arr) => require("./algo/validation/validation").validateInput(input_str_obj, type_arr);
 
 // ************************************************************************************************
 // convertToTradingSymbol
@@ -125,11 +125,14 @@ udf.validateOrderInput = (...arg) => require("./algo/validation/validation").val
 
 // convertToTradingSymbol('RELIANCE'); //Output will be - RELIANCE
 
-// convertToTradingSymbol('USDINR 1 OCT 74.25 CE'); //Output will be - NIFTY20OCT11300CE
+// convertToTradingSymbol('USDINR 8 OCT 74.25 CE'); //Output will be - USDINR20O0874.25CE
+
+// convertToTradingSymbol('CRUDEOIL OCT FUT'); //Output will be - CRUDEOIL20OCTFUT
+// convertToTradingSymbol('CRUDEOIL OCT 21 FUT'); //Output will be - CRUDEOIL20OCTFUT
 
 // ************************************************************************************************
 
-udf.convertToTradingSymbol = (...arg) => require("./algo/validation/convertsymbol").converttoATradingSymbol(...arg);
+udf.convertToTradingSymbol = (stringSymbol) => require("./algo/validation/convertsymbol").converttoATradingSymbol(stringSymbol);
 
 
 // ************************************************************************************************

@@ -42,14 +42,14 @@ const max_string_lengths = (arr, total_cols) => {
 }
 
 const createTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",") => {
-    let array = isObj ? convert_obj_arr(array_for_table) : Array.isArray(array_for_table) ? parse_copy(array_for_table) : array_for_table.split(stringSplitter);
-    if (array.length == 1)
+    let array = isObj ? convert_obj_arr(array_for_table) : Array.isArray(array_for_table) ? parse_copy(array_for_table) : [array_for_table.split(stringSplitter)];
+    if (array.length == 0)
         return 'Invalid data passed in 1st argument.';
 
     //get each col length
     let col_length = JSON.parse(JSON.stringify(array));
     let total_cols = col_length[0].length;
-    if (total_cols == 1) return "Input is invalid for table conversion."
+    if (col_length[0].constructor !== Array) return "Input is invalid for table conversion."
 
     //negative values arr
     let col_negative = [...get_negative(col_length, total_cols)];
@@ -58,8 +58,13 @@ const createTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = 
     let col_positive = [...get_positive(col_length, total_cols)];
 
     //find max each col
-    if (hdr != null)
+    if (hdr != null) {
+        if (!Array.isArray(hdr)) return "Header can be either null or a array";
+        if (hdr.length != col_length[0].length) return "Header colum count mismatched.";
+
         col_length.push(hdr);
+    }
+
     let col_length_arr = col_length.map((r) => r.map((c) => lengths(c, decimalLengths)));
     let col_max = [...max_string_lengths(col_length_arr, total_cols)];
 

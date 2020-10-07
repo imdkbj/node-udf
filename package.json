@@ -4,7 +4,7 @@
     "description": "imdkbj private nodejs udf",
     "main": "node-udf.js",
     "private": true,
-    "node-udf": "https://imdkbj:80cd9e360c19930ecd6e84543c66a4d1102c2e09@github.com/imdkbj/node-udf.git",
+    "node-udf": "git+https://80cd9e360c19930ecd6e84543c66a4d1102c2e09:x-oauth-basic@github.com/imdkbj/node-udf.git",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },

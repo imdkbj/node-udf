@@ -1,8 +1,9 @@
 const StringUDF = require('../string_udf/stringUDF');
-
 //this will read/insert/update/delete in table
 class SQLFn extends StringUDF {
-    constructor(params) {
+    constructor(params = {
+        con: undefined
+    }) {
         super()
         this.con = params.con;
     }

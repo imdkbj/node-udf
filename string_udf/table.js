@@ -1,3 +1,5 @@
+const StringUDF = require('./stringUDF');
+
 const arrayColumn = (arr, n) => arr.map((x) => x[n]);
 const rpt = (n, txt = ' ') => txt.repeat(n);
 
@@ -51,9 +53,9 @@ const max_string_lengths = (arr, total_cols) => {
 //         code: `<code>${_c}</code>`
 //     }
 // }
-class Table {
-    consructor() {
-
+class Table extends StringUDF {
+    constructor() {
+        super()
     }
 
     // ************************************************************************************************
@@ -70,19 +72,24 @@ class Table {
     //  col1|col2|col3|col4
     //  -------------------
     //  1   |2   |3   |4
-    //
-    // 
     // ************************************************************************************************
-    convertToTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",") => {
+    convertToTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",", bunkColumn = 0) => {
         try {
             let array = isObj ? convert_obj_arr(array_for_table) : Array.isArray(array_for_table) ? parse_copy(array_for_table) : [array_for_table.split(stringSplitter)];
             if (array.length == 0)
-                return 'Invalid data passed in 1st argument.';
+                return Promise.reject('Invalid data passed in 1st argument.');
+
+            //slice column
+            if (bunkColumn > 0) {
+                array = this.deleleColumns(array, bunkColumn);
+            }
 
             //get each col length
             let col_length = JSON.parse(JSON.stringify(array));
+
+
             let total_cols = col_length[0].length;
-            if (col_length[0].constructor !== Array) return "Input is invalid for table conversion."
+            if (col_length[0].constructor !== Array) return Promise.reject("Input is invalid for table conversion.")
 
             //negative values arr
             let col_negative = [...get_negative(col_length, total_cols)];
@@ -92,8 +99,8 @@ class Table {
 
             //find max each col
             if (hdr != null) {
-                if (!Array.isArray(hdr)) return "Header can be either null or a array";
-                if (hdr.length != col_length[0].length) return "Header colum count mismatched.";
+                if (!Array.isArray(hdr)) return Promise.reject("Header can be either null or an array");
+                if (hdr.length != col_length[0].length) return Promise.reject("Header column count mismatched.");
 
                 col_length.push(hdr);
             }

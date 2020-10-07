@@ -1,6 +1,6 @@
 {
     "name": "node-udf",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "imdkbj private nodejs udf",
     "main": "node-udf.js",
     "private": true,

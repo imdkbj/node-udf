@@ -10,7 +10,6 @@
     "author": "imdkbj",
     "license": "ISC",
     "dependencies": {
-        "node-udf": "git+ssh://git@github.com:imdkbj/node-udf.git",
         "crypto-random-string": "^3.3.0",
         "extends-classes": "^1.0.5",
         "mysql": "^2.18.1"

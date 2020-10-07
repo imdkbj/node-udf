@@ -4,8 +4,9 @@ const Table = require('./string_udf/table');
 const InputValidation = require("./algo/validation/validation");
 const ConvertToSymbol = require("./algo/validation/convertsymbol");
 const SqlUDF = require('./dbfn/sqlUDF');
+const BroadCastMessage = require('./telegram/broadcast');
 
-class UDF extends Many(StringUDF, Table, InputValidation, ConvertToSymbol, SqlUDF) {
+class UDF extends Many(StringUDF, Table, InputValidation, ConvertToSymbol, SqlUDF, BroadCastMessage) {
     constructor(params) {
         super(params)
         this.params = params;

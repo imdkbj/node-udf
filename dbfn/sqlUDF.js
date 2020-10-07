@@ -49,4 +49,5 @@ class SQLFn extends StringUDF {
     }
 }
 
+
 module.exports = SQLFn

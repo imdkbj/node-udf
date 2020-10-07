@@ -73,4 +73,5 @@ class ConvertToSymbol extends StringUDF {
 
 }
 
+
 module.exports = ConvertToSymbol

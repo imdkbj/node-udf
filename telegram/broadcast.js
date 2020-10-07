@@ -10,15 +10,7 @@ var q = new Queue(function (task, cb) {
 class BroadCastMessage {
     constructor() {}
 
-    broadcastMessages = (
-        bot,
-        users,
-        text,
-        params,
-        msg_per_seconds = 25,
-        isSameParams = true,
-        isSameMessge = true
-    ) => {
+    broadcastMessages = (bot, users, text, params, msg_per_seconds = 25, isSameParams = true, isSameMessge = true) => {
         //validate
         if (!Array.isArray(users)) return new Error('Argument users must be array.');
         if (msg_per_seconds > 29) return new Error('API limit is 30, Keep it 29 for safe side.');

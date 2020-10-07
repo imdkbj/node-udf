@@ -144,7 +144,6 @@ class stringUDFs {
     // It will have two argument.
     //      1. Pass the text which need to validate.
     //      2. Optional : isOnline >> default false, if true then will also check the online by making a POST request.
-
     //  Examples:
     //      isValidURL('zbkjbxzk');    //Output will be - false
     //      isValidMobile('https://google.com');    //Output will be - true

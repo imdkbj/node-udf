@@ -8,10 +8,11 @@ class SQLFn extends StringUDF {
         this.con = params.con;
     }
 
-    sqlQuery(sql, values, isRejectPromise = false, con = undefined) {
+    sqlQuery = (sql, values, isRejectPromise = false, con = undefined) => {
+        let _this = this;
         return new Promise(function (resolve, reject) {
-            let sqlcon = con = undefined ? this.con : con;
-            if (sqlcon == undefined || !this.isObject(sqlcon)) return reject('SQL connection not found.');
+            let sqlcon = con == undefined ? _this.con : con;
+            if (sqlcon == undefined || !_this.isObject(sqlcon)) reject('SQL connection not found.');
 
             sqlcon.query(sql, [values], function (err, result) {
                 if (err)
@@ -30,13 +31,14 @@ class SQLFn extends StringUDF {
                     }
                 }
             });
-        });
+        })
     }
 
     sqlQuery2 = (sql, con) => {
+        let _this = this;
         return new Promise(function (resolve, reject) {
-            let sqlcon = con = undefined ? this.con : con;
-            if (sqlcon == undefined || !this.isObject(sqlcon)) return reject('SQL connection not found.');
+            let sqlcon = con == undefined ? _this.con : con;
+            if (sqlcon == undefined || !_this.isObject(sqlcon)) reject('SQL connection not found.');
 
             sqlcon.query(sql, function (err, result) {
                 if (err)
@@ -44,6 +46,7 @@ class SQLFn extends StringUDF {
 
                 if (result == "undefined" || typeof result === "undefined")
                     reject('SQL mode - multiple query. SQL result error.\n' + result);
+
                 resolve(result);
             });
         });

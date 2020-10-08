@@ -153,7 +153,7 @@ class Table extends StringUDF {
             let final_array_table = isArrayReturn ? space_arr : space_arr.join('\n');
             return final_array_table;
         } catch (e) {
-            console.log(e);
+            return Promise.reject(e);
         }
     }
 }

@@ -231,7 +231,7 @@ class stringUDFs {
 
     deleleColumns(arr, col = 0) {
         if (col == 0) throw new Error('Argument col must not be zero.');
-        if (col > arr.length) throw new Error('Delete column is greater than arr columns.');
+        if (col > arr[0].length) throw new Error('Delete column is greater than arr columns.');
 
         let _arr = [...arr];
         _arr = _arr.map((rows) => rows.filter((_, i) => i !== col));

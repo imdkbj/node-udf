@@ -43,16 +43,6 @@ const max_string_lengths = (arr, total_cols) => {
     return col_max;
 }
 
-
-// exports.arr2Table = (...arg) => createTable(...arg);
-// exports.arr_Table = (...arg) => {
-//     let t = createTable(...arg);
-//     let _c = Array.isArray(t) ? t.join('\n') : t;
-//     return {
-//         table: t,
-//         code: `<code>${_c}</code>`
-//     }
-// }
 class Table extends StringUDF {
     constructor() {
         super()
@@ -73,7 +63,7 @@ class Table extends StringUDF {
     //  -------------------
     //  1   |2   |3   |4
     // ************************************************************************************************
-    convertToTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",", bunkColumn = 0) => {
+    convertToTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",", bunkColumn = 0, isfixedformat = true) => {
         try {
             let array = isObj ? convert_obj_arr(array_for_table) : Array.isArray(array_for_table) ? parse_copy(array_for_table) : [array_for_table.split(stringSplitter)];
             if (array.length == 0)
@@ -150,8 +140,9 @@ class Table extends StringUDF {
                 space_arr.unshift(_hdr);
             }
 
-            let final_array_table = isArrayReturn ? space_arr : space_arr.join('\n');
-            return final_array_table;
+            var final_table = isArrayReturn ? space_arr : space_arr.join('\n');
+            final_table = isfixedformat ? `<code>${final_table}</code>` : final_table;
+            return final_table;
         } catch (e) {
             return Promise.reject(e);
         }

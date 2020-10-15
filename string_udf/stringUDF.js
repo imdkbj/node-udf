@@ -155,9 +155,9 @@ class stringUDFs {
 
     // ************************************************************************************************
     isValidURL(string, isOnline = false) {
-        var regex = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g);
-        let isValid = regex.test(mobile);
-        if (!isOnline || !isValid) return isValid;
+        var regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/g;
+        let isValid = regex.test(string);
+        if (!isOnline) return isValid;
     }
 
     // ************************************************************************************************

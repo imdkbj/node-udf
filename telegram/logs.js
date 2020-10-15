@@ -48,7 +48,7 @@ class Pushlog extends Sqlfn {
         return values;
     }
 
-    pushLog = (ctx, sql = null, dbtable = null, con) => {
+    pushLog = (ctx, next, sql = null, dbtable = null, con) => {
         // if (sql == null && dbtable == null) return new Error('sql statement && dbtable can\'t be null');
 
         let _dbtable = dbtable == null ? 'all_logs' : dbtable;
@@ -56,7 +56,8 @@ class Pushlog extends Sqlfn {
 
         let values = __pushLogSQL(ctx);
 
-        return this.sqlQuery(_sql, values, null, false, con);
+        this.sqlQuery(_sql, values, null, false, con);
+        return next();
     }
 }
 

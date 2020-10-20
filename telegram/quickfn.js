@@ -1,7 +1,7 @@
 const Markup = require("telegraf/markup");
 
 class Quickfn {
-    constructor()
+    constructor() {}
 
     cancelTask = async ({
         session,

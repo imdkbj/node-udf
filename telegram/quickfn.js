@@ -26,6 +26,8 @@ class Quickfn {
             sendChatAction
         }
     }, action) => sendChatAction(id, action);
+
+    parseBOTToken = (tokenMsg) => tokenMsg.match(/\d{6,11}:.+/g) || 0;
 }
 
 module.exports = Quickfn;

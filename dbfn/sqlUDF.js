@@ -1,5 +1,7 @@
 const StringUDF = require('../string_udf/stringUDF');
 const cryptoRandomString = require("crypto-random-string");
+const fs = require("fs");
+
 
 //this will read/insert/update/delete in table
 class SQLFn extends StringUDF {

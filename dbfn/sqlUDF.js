@@ -1,4 +1,6 @@
 const StringUDF = require('../string_udf/stringUDF');
+const cryptoRandomString = require("crypto-random-string");
+
 //this will read/insert/update/delete in table
 class SQLFn extends StringUDF {
     constructor(params = {
@@ -51,6 +53,46 @@ class SQLFn extends StringUDF {
             });
         });
     }
+
+    sql2CSV(sql, preResult = 0, file_id = null, path) {
+        return new Promise(function (resolve, reject) {
+            var values = [];
+            var columns = [];
+
+            let _file_id = file_id == null ? `csv_${cryptoRandomString({
+                length: 10
+            })}` : file_id;
+
+            var filepath = `${path}${_file_id}.csv`;
+
+            if (sql == null && preResult == 0) resolve(0);
+            const promise = preResult == 0 ? sqlQuery(sql) : Promise.resolve(preResult);
+
+            promise
+                .then((result) => {
+                    if (result != 0) {
+                        var hdr = JSON.stringify(Object.keys(result[0])).replace(/(^\[)|(\]$)/gm, "");
+                        var csv = result.map((d) => JSON.stringify(Object.values(d)))
+                            .join("\n")
+                            .replace(/(^\[)|(\]$)/gm, "");
+
+                        fs.writeFile(filepath, `${hdr}\n${csv}`, (err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(filepath);
+                            }
+                        });
+                    } else {
+                        return Promise.reject("No data found for query.");
+                    }
+                })
+                .catch((e) => {
+                    reject(e);
+                });
+        });
+    }
+
 }
 
 

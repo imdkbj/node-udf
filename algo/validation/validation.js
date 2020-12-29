@@ -16,7 +16,9 @@ class InputValidation extends StringUDF {
     // validateOrderInput(str,['INTRADAY', 'DELIVERY', 'MARGIN']); //Here order type will be validated as per array.
     // validateOrderInput(str); //Here order type will not be validated.
     // ************************************************************************************************
-    validateOrderInput = (input_str_obj, type_arr = []) => {
+    validateOrderInput = (input_str_obj, type_arr = [],ignoreCheck=[]) => {
+
+        const notIgnoreMe = (txt) => !(ignoreCheck.length == 0 ? true : ignoreCheck.indexOf(txt) > -1);
 
         let inputObject = this.isObject(input_str_obj) ? input_str_obj : this.stringToJSON(input_str_obj);
         Object.assign({}, input_str_obj);
@@ -58,11 +60,11 @@ class InputValidation extends StringUDF {
             }
         }
 
-        if (qty == undefined || !this.isNumeric(qty) || !(qty > 0)) {
+        if (qty == undefined || !this.isNumeric(qty) || !(qty > 0) || notIgnoreMe('qty')) {
             return Promise.reject("Oops...Your input qty is wrong.");
         }
 
-        if (price == undefined || !this.isNumeric(price)) {
+        if (price == undefined || !this.isNumeric(price) || notIgnoreMe('price')) {
             return Promise.reject("Oops...Price is wrong.");
         }
 
@@ -77,15 +79,15 @@ class InputValidation extends StringUDF {
             }
         }
 
-        if (sl == undefined || !this.isNumeric(sl)) {
+        if (sl == undefined || !this.isNumeric(sl) || notIgnoreMe('sl')) {
             return Promise.reject("Oops...Stoploss is wrong.");
         }
 
-        if (sl == undefined || !this.isNumeric(tgt)) {
+        if (tgt == undefined || !this.isNumeric(tgt) || notIgnoreMe('tgt')) {
             return Promise.reject("Oops...Target is wrong.");
         }
 
-        if (tsl == undefined) {
+        if (tsl == undefined || tsl == 0) {
             tsl = 0;
         } else {
             if (!this.isNumeric(tsl) || (tsl < 1)) {

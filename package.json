@@ -1,20 +1,32 @@
 {
-    "name": "node-udf",
-    "version": "0.1.0",
-    "description": "imdkbj private nodejs udf",
-    "main": "node-udf.js",
-    "private": true,
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "imdkbj",
-    "license": "ISC",
-    "dependencies": {
-        "better-queue": "^3.8.10",
-        "crypto-random-string": "^3.3.0",
-        "extends-classes": "^1.0.5",
-        "mysql": "^2.18.1",
-        "telegraf": "^3.38.0"
-    },
-    "install": "npm run build"
+  "name": "node-udf",
+  "version": "0.1.0",
+  "description": "imdkbj private nodejs udf",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "imdkbj",
+  "license": "ISC",
+  "dependencies": {
+    "better-queue": "^3.8.10",
+    "crypto-random-string": "^3.3.0",
+    "extends-classes": "^1.0.5",
+    "mysql": "^2.18.1",
+    "telegraf": "^3.38.0"
+  },
+  "install": "npm run build",
+  "directories": {
+    "example": "example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imdkbj/node-udf.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/imdkbj/node-udf/issues"
+  },
+  "homepage": "https://github.com/imdkbj/node-udf#readme"
 }

@@ -5,7 +5,7 @@ class Pushlog extends Sqlfn {
         super()
     }
 
-    this.sqlQuery(_sql, values, null, false, con);
+  //  this.sqlQuery(_sql, values, null, false, con);
 
 
     dbInfo = {
@@ -16,8 +16,8 @@ class Pushlog extends Sqlfn {
     }
 
 
-    channelMapping = (ctx, matchText = 'mapAGroup', dbInfo = {}) => {
-        if (ctx.updateType != 'message' || ctx.updateSubTypes[0] != 'text') return
+    channelMapping = async(ctx, matchText = 'mapAGroup', dbInfo = {}) => {
+        if (ctx.updateType != 'message' || ctx.updateSubTypes[0] != 'text') return;
 
         let {
             tg,
@@ -68,7 +68,7 @@ class Pushlog extends Sqlfn {
             if (!isAdminThere) return sendMsg(`You are not a admin in ${type} <i>${title}</i>.`);
 
             var sql = `select * from ${tableName} where ${telegramIdHeader}='${telegram_id}' and ${channelIdHeader} = '${resourceid}'`;
-            let _status = await sqlProcess(sql, false);
+            let _status = await this.sqlProcess(sql, false);
             if (_status != 0) return sendMsg(`This ${type} mapping already exists.`);
 
             sql = `INSERT INTO ${tableName} (${telegramIdHeader},${channelIdHeader},${channel_name}) VALUES ?`;
@@ -76,13 +76,13 @@ class Pushlog extends Sqlfn {
                 [telegram_id, resourceid, resourceTitle]
             ]
 
-            let insert_id = await sqlProcess(sql, false, values);
+            let insert_id = await this.sqlProcess(sql, false, values);
             let insertId = insert_id.insertId;
 
             let new_mappingcode = idSeries(insertId);
 
             sql = `UPDATE ${tableName} SET forward_id = '${new_mappingcode}' WHERE id = '${insertId}'`;
-            let _done = await sqlProcess(sql, false);
+            let _done = await this.sqlProcess(sql, false);
             let reply = _done != 0 ? `Hey! Mapping done. The Forward ID for ${type} <i>${title}</i> is <b>${new_mappingcode}</b>` : 'Something went wrong.';
             return sendMsg(reply);
 

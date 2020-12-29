@@ -208,7 +208,8 @@ class stringUDFs {
     //
     // ************************************************************************************************
     isNumeric(value) {
-        return (!isNaN(parseFloat(value)));
+        //        return (!isNaN(parseFloat(value)));
+        return (Object.prototype.toString.call(value) === '[object Number]');
     }
 
     // ************************************************************************************************

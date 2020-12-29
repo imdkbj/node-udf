@@ -56,7 +56,8 @@ class SQLFn extends StringUDF {
         });
     }
 
-    sql2CSV(sql, preResult = 0, file_id = null, path) {
+    sql2CSV(sql, preResult = 0, file_id = null, path, con = undefined) {
+        let _this = this;
         return new Promise(function (resolve, reject) {
             var values = [];
             var columns = [];
@@ -68,7 +69,7 @@ class SQLFn extends StringUDF {
             var filepath = `${path}${_file_id}.csv`;
 
             if (sql == null && preResult == 0) resolve(0);
-            const promise = preResult == 0 ? sqlQuery(sql) : Promise.resolve(preResult);
+            const promise = preResult == 0 ? _this.sqlQuery(sql, [], false, con) : Promise.resolve(preResult);
 
             promise
                 .then((result) => {

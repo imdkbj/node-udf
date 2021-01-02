@@ -281,7 +281,7 @@ class BhavCopy {
    * @param  string          day       The day for downloading bhavcopy
    * @return Promise
    */
-  download(reqObject, isfo = false) {
+  bhavdownload(reqObject, isfo = false) {
     console.log(this)
     return new Promise((resolve, reject) => {
       let {

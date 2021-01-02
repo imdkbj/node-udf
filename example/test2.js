@@ -1,7 +1,18 @@
+const {
+    async
+} = require('crypto-random-string');
 const _udf = require('../index.js');
-let {convertToTradingSymbol,validateOrderInput} =  new _udf();
 
-const testme = async() => {
+let nodeUDF = new _udf();
+
+let {
+    convertToTradingSymbol,
+    validateOrderInput,
+    download
+} = nodeUDF;
+
+
+const testme = async () => {
     try {
         let x = await validateOrderInput({
             symbol: 'ACC',
@@ -21,8 +32,5 @@ const testme = async() => {
         console.log(e);
     }
 }
-
-
-testme();
 
 //USDINR2110173CE

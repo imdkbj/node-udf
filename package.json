@@ -14,7 +14,9 @@
     "crypto-random-string": "^3.3.0",
     "extends-classes": "^1.0.5",
     "mysql": "^2.18.1",
-    "telegraf": "^3.38.0"
+    "request": "^2.88.2",
+    "telegraf": "^3.38.0",
+    "unzipper": "^0.10.11"
   },
   "install": "npm run build",
   "directories": {

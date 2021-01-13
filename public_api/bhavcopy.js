@@ -282,7 +282,6 @@ class BhavCopy {
    * @return Promise
    */
   bhavdownload(reqObject, isfo = false) {
-    console.log(this)
     return new Promise((resolve, reject) => {
       let {
         month,

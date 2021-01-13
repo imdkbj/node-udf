@@ -1,9 +1,9 @@
-const {
-    async
-} = require('crypto-random-string');
 const _udf = require('../index.js');
+const conn = require('./db.js');
 
-let nodeUDF = new _udf();
+let nodeUDF = new _udf({
+    con: conn
+});
 
 let {
     convertToTradingSymbol,
@@ -33,4 +33,18 @@ const testme = async () => {
     }
 }
 
-//USDINR2110173CE
+
+const test2 = async () => {
+    try {
+        let sql = 'select * from users_db';
+        let result = await nodeUDF.sqlQuery(sql, [], false, conn);
+        let r = nodeUDF.convertToTable(result, ['id', 'client', 'password', 'api_key'], true, false, " | ", decimalLengths = 0, stringSplitter = ",", bunkColumn = 0, isfixedformat = false);
+
+        console.log(r);
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+test2()

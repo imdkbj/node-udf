@@ -28,7 +28,7 @@ const get_negative = (arr, total_cols) => {
 const get_positive = (arr, total_cols) => {
     let col_positive = [];
     for (let i = 0; i < total_cols; i++) {
-        let _arr = arrayColumn(arr, i).filter(r => r > 0);
+        let _arr = arrayColumn(arr, i).filter(r => r >= 0);
         let _n = Math.max(..._arr) || 0;
         col_positive.push(_n);
     }
@@ -77,7 +77,6 @@ class Table extends StringUDF {
             //get each col length
             let col_length = JSON.parse(JSON.stringify(array));
 
-
             let total_cols = col_length[0].length;
             if (col_length[0].constructor !== Array) return Promise.reject("Input is invalid for table conversion.")
 
@@ -98,23 +97,26 @@ class Table extends StringUDF {
             let col_length_arr = col_length.map((r) => r.map((c) => lengths(c, decimalLengths)));
             let col_max = [...max_string_lengths(col_length_arr, total_cols)];
 
+            //   console.log(col_negative, col_positive, col_length_arr, col_max);
+
+
             const format_row = (arrayValue, index) => {
                 var rowTxt = arrayValue;
+
                 //check decimal
                 if (decimalLengths > 0 && typeof (rowTxt) == 'number')
                     rowTxt = rowTxt.toFixed(decimalLengths);
 
-                if (index == total_cols - 1)
-                    return rowTxt;
+                // if (index == total_cols - 1)
+                //     return rowTxt;
 
                 //add_space_if_col_have_negative
                 let isNegative = col_negative[index] < 0 && rowTxt >= 0;
 
-                //add extra space if col have negative and postive length>negative
+                //add extra space if col have negative and positive length>negative negative
                 let positive_buffer = col_negative[index] < 0 && col_max[index] >= col_negative[index].toString().length && col_positive[index].toString().length >= col_negative[index].toString().length
 
-                var _spaces = (-isNegative + positive_buffer + col_max[index] - lengths(rowTxt, decimalLengths)) || 0;
-                _spaces = _spaces < 0 ? 0 : _spaces;
+                var _spaces = Math.max(0, ((-isNegative + positive_buffer + col_max[index] - lengths(rowTxt, decimalLengths)) || 0));
                 let _txt = rowTxt + rpt(_spaces);
 
                 let _return = isNegative ? rpt(1) + _txt : _txt;

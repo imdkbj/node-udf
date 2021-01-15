@@ -1,6 +1,6 @@
 {
   "name": "node-udf",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "imdkbj private nodejs udf",
   "main": "index.js",
   "private": true,
@@ -14,6 +14,7 @@
     "crypto-random-string": "^3.3.0",
     "extends-classes": "^1.0.5",
     "mysql": "^2.18.1",
+    "node-cache": "^5.1.2",
     "request": "^2.88.2",
     "telegraf": "^3.38.0",
     "unzipper": "^0.10.11"

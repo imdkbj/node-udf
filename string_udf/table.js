@@ -48,26 +48,36 @@ class Table extends StringUDF {
         super()
     }
 
+    cb(replyError, txt) {
+        if (replyError) {
+            return Promise.reject(txt);
+        } else {
+            return 'NA';
+        }
+    }
+
     // ************************************************************************************************
     // convertToTable
     //
     //  This will convert string/object/array into a tabular format.
     //  It will have 7 arguments.
 
-    //  convertToTable('1,2,3,4',null,false,false) ;//Output will be - 1|2|3|4
+    //  convertToTable('1,2,3,4',null,false) ;//Output will be - 1|2|3|4
     //  convertToTable([[1.12,2,3,4]],null,false,false,"|",2) ;//Output will be - 1.12|2.00|3.00|4.00
-    //  convertToTable('1-2-3-4',null,false,false,"||",0,"-") ;//Output will be - 1||2||3||4
-    //  convertToTable([[1,2,3,4]],null,false,false) ;//Output will be - 1|2|3|4
+    //  convertToTable('1-2-3-4',null,false,"||",0,"-") ;//Output will be - 1||2||3||4
+    //  convertToTable([[1,2,3,4]],null,false) ;//Output will be - 1|2|3|4
     //  convertToTable([[1,2,3,4]],['col1','col2','col3','col4'],false,false) ;//Output will be following
     //  col1|col2|col3|col4
     //  -------------------
     //  1   |2   |3   |4
+    //  convertToTable(sqlResult,['col1','col2','col3','col4']) ;//Direct sql result also can be converted.
     // ************************************************************************************************
-    convertToTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",", bunkColumn = 0, isfixedformat = true) => {
+    convertToTable = (array_for_table, hdr = null, isObj = true, isArrayReturn = false, sep = '|', decimalLengths = 0, stringSplitter = ",", bunkColumn = 0, isfixedformat = true, replyError = true) => {
+        let _this = this;
         try {
             let array = isObj ? convert_obj_arr(array_for_table) : Array.isArray(array_for_table) ? parse_copy(array_for_table) : [array_for_table.split(stringSplitter)];
-            if (array.length == 0)
-                return Promise.reject('Invalid data passed in 1st argument.');
+            if (array.length == 0) return _this.cb(replyError, 'Invalid data passed in 1st argument.')
+            // return Promise.reject('Invalid data passed in 1st argument.');
 
             //slice column
             if (bunkColumn > 0) {
@@ -78,7 +88,9 @@ class Table extends StringUDF {
             let col_length = JSON.parse(JSON.stringify(array));
 
             let total_cols = col_length[0].length;
-            if (col_length[0].constructor !== Array) return Promise.reject("Input is invalid for table conversion.")
+            if (col_length[0].constructor !== Array) return _this.cb(replyError, "Input is invalid for table conversion.")
+
+            //Promise.reject("Input is invalid for table conversion.")
 
             //negative values arr
             let col_negative = [...get_negative(col_length, total_cols)];
@@ -88,17 +100,14 @@ class Table extends StringUDF {
 
             //find max each col
             if (hdr != null) {
-                if (!Array.isArray(hdr)) return Promise.reject("Header can be either null or an array");
-                if (hdr.length != col_length[0].length) return Promise.reject("Header column count mismatched.");
+                if (!Array.isArray(hdr)) return _this.cb(replyError, "Header can be either null or an array");
+                if (hdr.length != col_length[0].length) return _this.cb(replyError, "Header column count mismatched.");
 
                 col_length.push(hdr);
             }
 
             let col_length_arr = col_length.map((r) => r.map((c) => lengths(c, decimalLengths)));
             let col_max = [...max_string_lengths(col_length_arr, total_cols)];
-
-            //   console.log(col_negative, col_positive, col_length_arr, col_max);
-
 
             const format_row = (arrayValue, index) => {
                 var rowTxt = arrayValue;
@@ -133,7 +142,7 @@ class Table extends StringUDF {
 
             let space_arr = _space_arr.map((r) => map_arr(r));
 
-            //add hdr
+            //add header
             if (hdr != null) {
                 let _hdr = map_arr(hdr);
                 let find_max_length = Math.max(...space_arr.map(r => r.length), _hdr.length);
@@ -146,7 +155,7 @@ class Table extends StringUDF {
             final_table = isfixedformat ? `<code>${final_table}</code>` : final_table;
             return final_table;
         } catch (e) {
-            return Promise.reject(e);
+            return _this.cb(replyError, e);
         }
     }
 }

@@ -8,8 +8,9 @@ const BroadCastMessage = require('./telegram/broadcast');
 const Pushlog = require('./telegram/logs');
 const Quickfn = require('./telegram/quickfn');
 const BhavCopy = require('./public_api/bhavcopy');
+const Cache = require("./misc/cache");
 
-class UDF extends Many(StringUDF, Table, InputValidation, ConvertToSymbol, SqlUDF, BroadCastMessage, Pushlog, Quickfn,BhavCopy) {
+class UDF extends Many(StringUDF, Table, InputValidation, ConvertToSymbol, SqlUDF, BroadCastMessage, Pushlog, Quickfn, BhavCopy, Cache) {
     constructor(params) {
         super(params)
         this.params = params;

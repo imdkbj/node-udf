@@ -1,12 +1,13 @@
 const _udf = require('../index.js');
-const conn = require('./db.js');
+// const conn = require('./db.js');
 
 let nodeUDF = new _udf();
 
 let {
     convertToTradingSymbol,
     validateOrderInput,
-    download
+    download,
+    setgetCache
 } = nodeUDF;
 
 
@@ -51,9 +52,10 @@ const test2 = async () => {
 // const myCache = new NodeCache()
 
 async function test3() {
-    let x = await nodeUDF.getsetData(['k'], 100);
+    let cb = new Date()
+    let x = await setgetCache('k', 10, cb);
 
     console.log(x);
 }
 
-test2()
+test3()

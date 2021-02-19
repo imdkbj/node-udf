@@ -1,7 +1,7 @@
 const cacheManager = require("cache-manager");
 var fsStore = require('cache-manager-fs');
 
-const initCache = () =>
+const _initCache = () =>
     new Promise((resolve, reject) => {
         memoryCache = cacheManager.caching({
             store: fsStore,
@@ -15,23 +15,25 @@ const initCache = () =>
         })
     })
 
-
-
 class Cache {
     constructor(params) {
         this.params = params;
     }
 
-    setgetCache = async (key, ttl, cb) => {
+    initCache = () => _initCache();
+
+    getsetCache = async (key, ttl, cb) => {
+        let _this = this;
         try {
-            await initCache();
-            return memoryCache.wrap(key, async () => await eval(cb), {
+            await _this.initCache();
+            return memoryCache.wrap(key, async () => await cb(), {
                 ttl: ttl
             });
         } catch (err) {
-            return Promise.reject(err);
+            throw new Error(err);
         }
     }
+
 }
 
 module.exports = Cache;

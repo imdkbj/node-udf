@@ -1,13 +1,16 @@
 const _udf = require('../index.js');
 // const conn = require('./db.js');
 
+const cacheManager = require("cache-manager");
+var fsStore = require('cache-manager-fs');
+
 let nodeUDF = new _udf();
 
 let {
     convertToTradingSymbol,
     validateOrderInput,
     download,
-    setgetCache
+    getsetCache
 } = nodeUDF;
 
 
@@ -52,10 +55,57 @@ const test2 = async () => {
 // const myCache = new NodeCache()
 
 async function test3() {
-    let cb = new Date()
-    let x = await setgetCache('k', 10, cb);
+    let cb = () => {
+        console.log('called');
+        return new Date();
+    }
+
+    let x = await getsetCache('k', 10, cb);
 
     console.log(x);
 }
 
 test3()
+
+const initCache2 = () =>
+    new Promise((resolve, reject) => {
+        memoryCache = cacheManager.caching({
+            store: fsStore,
+            path: 'cache',
+            ttl: 30,
+            preventfill: false,
+            reviveBuffers: false,
+            fillcallback: data => {
+                resolve()
+            }
+        })
+    })
+
+
+getsetCache2 = async (key, ttl, cb) => {
+    let _this = this;
+    try {
+        await _this.initCache();
+        return memoryCache.wrap(key, async () => await cb(), {
+            ttl: ttl
+        });
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+
+
+async function test4() {
+    let cb = () => {
+        console.log('called');
+        return new Date();
+    }
+
+    await initCache2();
+    let x = await getsetCache2('k', 10, cb);
+
+    console.log(x);
+}
+
+test4()

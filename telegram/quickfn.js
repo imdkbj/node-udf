@@ -1,7 +1,7 @@
 //const Markup = require("telegraf/markup");
 
-class Quickfn {
-    constructor() {}
+class QuickTelegramFn {
+    constructor() { }
 
     cancelTask = async ({
         session,
@@ -30,4 +30,4 @@ class Quickfn {
     parseBOTToken = (tokenMsg) => tokenMsg.match(/\d{6,11}:.+/g) || 0;
 }
 
-module.exports = Quickfn;
+module.exports = QuickTelegramFn;

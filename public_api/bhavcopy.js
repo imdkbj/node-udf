@@ -15,11 +15,11 @@ class BhavCopy {
     this.customDir = dir && dir !== undefined && dir !== "undefined" ? dir : "";
     this.fileType =
       type &&
-      type !== undefined &&
-      type !== "undefined" &&
-      this.__validateFileType().indexOf(type) !== -1 ?
-      type :
-      "csv";
+        type !== undefined &&
+        type !== "undefined" &&
+        this.__validateFileType().indexOf(type) !== -1 ?
+        type :
+        "csv";
     this.isMultiplesFile = false;
   }
 

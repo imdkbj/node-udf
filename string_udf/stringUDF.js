@@ -1,5 +1,5 @@
 class stringUDFs {
-    constructor() {}
+    constructor() { }
 
     // ************************************************************************************************
     // stringToJSON
@@ -71,13 +71,14 @@ class stringUDFs {
     //      isAlphaNumeric('abcd xtyz5245/',true,true,true,'&^');  //Output will be - false;
     //      isAlphaNumeric('abcd xtyz5245/',true,true,true,'/');  //Output will be - true;
     // ************************************************************************************************
-    isAlphaNumeric(text, isSpaceAllowed = false, isAlphaAllowed = true, isNumericAllowed = true, allowedChars = null) {
+    isAlphaNumeric(text, isSpaceAllowed = false, isAlphaAllowed = true,
+        isNumericAllowed = true, allowedChars = undefined, maxLength = 100, minLength = 1) {
         var regex = "";
 
         regex = isSpaceAllowed ? regex += " " : regex;
         regex = isAlphaAllowed ? regex += 'A-Za-z' : regex;
         regex = isNumericAllowed ? regex += '1-9' : regex;
-        regex = allowedChars == null ? regex : regex += allowedChars;
+        regex = allowedChars ? regex : regex += allowedChars;
         if (regex == "") return false;
 
         let isValid = new RegExp(`\[${regex}\]\+\$`).test(text);
@@ -118,7 +119,7 @@ class stringUDFs {
     //      properCase('abc');    //Output will be - Abc
     // ************************************************************************************************
     properCase(text) {
-        let output = text.length > 0 ? text.charAt(0).toUpperCase() + text.substr(1).toLowerCase() : " ";
+        let output = text.length > 0 ? text.charAt(0).toUpperCase() + text.substr(1).toLowerCase() : "";
         return output;
     }
 
@@ -163,9 +164,9 @@ class stringUDFs {
     // ************************************************************************************************
     // exportArrayColumn
     //
-    // This extract a column from multi-dimentional array
+    // This extract a column from multi-dimensional array
     // It will have two argument.
-    //      1. Pass the multi-dimentional array.
+    //      1. Pass the multi-dimensional array.
     //      2. col >> the column number which needs to be exported.
 
     //  Examples:
@@ -191,7 +192,7 @@ class stringUDFs {
     //
     // ************************************************************************************************
     isObject(value) {
-        return (typeof value === 'object');
+        return (typeof value === 'object' && value !== null);
     }
 
     // ************************************************************************************************
@@ -227,10 +228,12 @@ class stringUDFs {
     //
     // ************************************************************************************************
     isNoValue(value) {
-        return (value === null || value == undefined || typeof value === 'undefined' || (isNaN(value) && !value.length));
+        return (value === null || value || typeof value === 'undefined' || (isNaN(value) && !value.length));
     }
 
-    deleleColumns(arr, col = 0) {
+    objectToArray = (data) => Array.isArray(data) ? data : [data];
+
+    deleteColumns(arr, col = 0) {
         if (col == 0) throw new Error('Argument col must not be zero.');
         if (col > arr[0].length) throw new Error('Delete column is greater than arr columns.');
 

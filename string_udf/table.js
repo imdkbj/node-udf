@@ -81,7 +81,7 @@ class Table extends StringUDF {
 
             //slice column
             if (bunkColumn > 0) {
-                array = this.deleleColumns(array, bunkColumn);
+                array = this.deleteColumns(array, bunkColumn);
             }
 
             //get each col length

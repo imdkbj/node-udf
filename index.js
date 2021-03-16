@@ -6,11 +6,12 @@ const ConvertToSymbol = require("./algo/validation/convertsymbol");
 const SqlUDF = require('./dbfn/sqlUDF');
 const BroadCastMessage = require('./telegram/broadcast');
 const Pushlog = require('./telegram/logs');
-const Quickfn = require('./telegram/quickfn');
+const QuickTelegramFn = require('./telegram/quickfn');
 const BhavCopy = require('./public_api/bhavcopy');
 const Cache = require("./misc/cache");
+const ApiCalls = require('./api_calls/api_calls');
 
-class UDF extends Many(StringUDF, Table, InputValidation, ConvertToSymbol, SqlUDF, BroadCastMessage, Pushlog, Quickfn, BhavCopy, Cache) {
+class UDF extends Many(StringUDF, Table, InputValidation, ConvertToSymbol, SqlUDF, BroadCastMessage, Pushlog, QuickTelegramFn, BhavCopy, Cache, ApiCalls) {
     constructor(params) {
         super(params)
         this.params = params;

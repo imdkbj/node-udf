@@ -18,7 +18,8 @@
     "mysql": "^2.18.1",
     "request": "^2.88.2",
     "telegraf": "^3.38.0",
-    "unzipper": "^0.10.11"
+    "unzipper": "^0.10.11",
+    "axios": "^0.21.1"  
   },
   "install": "npm run build",
   "directories": {

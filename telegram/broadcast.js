@@ -11,7 +11,9 @@ var q = new Queue(function (task, cb) {
 })
 
 class BroadCastMessage extends stringUDFs {
-    constructor() { }
+    constructor() {
+        super(params)
+    }
 
     broadcastMessages = (BotOrToken, users, text, params, msg_per_seconds = 25, isSameParams = true, isSameMessage = true) => {
         let _this = this;

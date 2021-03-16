@@ -6,6 +6,9 @@ class BhavCopy {
    * @param string dir      Specify the directory for downloading files
    */
   constructor(options = {}) {
+    super()
+    console.log(1, options);
+
     this.request = require("request");
     this.fs = require("fs");
     const {
@@ -19,7 +22,7 @@ class BhavCopy {
         type !== "undefined" &&
         this.__validateFileType().indexOf(type) !== -1 ?
         type :
-        "csv";
+        "json";
     this.isMultiplesFile = false;
   }
 

@@ -172,16 +172,18 @@ class BhavCopy {
     if (fileName) {
       const parts = fileName.split("/");
       let originalFileName = parts.pop();
+
+      const fileDate = originalFileName
+        .replace(".csv.zip", "")
+        .replace("cm", "")
+        .replace("fo", "")
+        .replace("bhav", "");
+
       return new Promise((resolve, reject) => {
         return this.__callNSEforFile(fileName)
           .then(streamObj => {
             if (streamObj && typeof streamObj === "object" && Object.keys(streamObj).length) {
               streamObj.on("response", response => {
-                const fileDate = originalFileName
-                  .replace(".csv.zip", "")
-                  .replace("cm", "")
-                  .replace("fo", "")
-                  .replace("bhav", "");
                 if (response.statusCode === 200) {
                   //const unzip = require("unzip");
                   const unzipper = require('unzipper');
@@ -236,6 +238,13 @@ class BhavCopy {
                   return resolve({});
                 }
               });
+
+              setTimeout(() => {
+                return resolve({
+                  message: "Bhavcopy is not available for the date: " + fileDate
+                });
+              }, 5000);
+
             } else {
               return reject({
                 message: "Server is temporarily down. Please try after some time."
@@ -341,7 +350,6 @@ class BhavCopy {
 
       if (Array.isArray(generateFileNamesArray) && generateFileNamesArray.length) {
         generateFileNamesArray.forEach((item, index) => promiseArray.push(this.__getBhavCopyFromNSE(item)));
-
       }
 
       return Promise.all(promiseArray)

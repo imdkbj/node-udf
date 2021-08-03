@@ -2,7 +2,7 @@ const axios = require('axios');
 const qs = require('qs');
 const stringUDFs = require('../string_udf/stringUDF');
 
-class Calls extends stringUDFs {
+class AxiosCalls extends stringUDFs {
     constructor(baseURL, headers) {
         super()
         this.baseURL = baseURL;
@@ -52,4 +52,4 @@ class Calls extends stringUDFs {
     }
 }
 
-module.exports = Calls
+module.exports = AxiosCalls

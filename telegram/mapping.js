@@ -5,18 +5,18 @@ class Pushlog extends Sqlfn {
         super()
     }
 
-  //  this.sqlQuery(_sql, values, null, false, con);
+    //  this.sqlQuery(_sql, values, null, false, con);
 
 
     dbInfo = {
-        tableName: 'x'
+        tableName: 'x',
         channelIdHeader: 1,
         telegramIdHeader: 'telegram_id',
         channelNameHeader
     }
 
 
-    channelMapping = async(ctx, matchText = 'mapAGroup', dbInfo = {}) => {
+    channelMapping = async (ctx, matchText = 'mapAGroup', dbInfo = {}) => {
         if (ctx.updateType != 'message' || ctx.updateSubTypes[0] != 'text') return;
 
         let {
@@ -59,7 +59,7 @@ class Pushlog extends Sqlfn {
 
         const sendMsg = (txt) => telegram.sendMessage(telegram_id, txt, {
             parse_mode: "HTML"
-        }).catch(e => {});
+        }).catch(e => { });
 
         try {
             const admins = await tg.getChatAdministrators(resourceid);
@@ -87,7 +87,7 @@ class Pushlog extends Sqlfn {
             return sendMsg(reply);
 
         } catch (e) {
-            ctx.replyWithHTML(e.description).catch(e => {})
+            ctx.replyWithHTML(e.description).catch(e => { })
         }
     }
 

@@ -5,12 +5,12 @@ class ConvertToSymbol extends StringUDF {
         super()
     }
 
-    insertYear = (scrip, scriptype) => {
+    insertYear = (scrip, scripType) => {
         var _year = 21;
 
-        let year_index = scriptype == 'FUT' ?  -2 :  -3;
-        let oldyear = scrip.slice(year_index, year_index + 1)[0]
-        let is_year = this.isNumeric(oldyear);
+        let year_index = scripType == 'FUT' ? -2 : -3;
+        let oldYear = scrip.slice(year_index, year_index + 1)[0]
+        let is_year = this.isNumeric(oldYear);
 
         if (is_year) return scrip;
 
@@ -51,24 +51,24 @@ class ConvertToSymbol extends StringUDF {
         let scrip = stringSymbol.toUpperCase().split(' ');
 
         //find fut/ce/pe
-        let scriptype = scrip[scrip.length - 1];
-        let isFO = scriptype == 'CE' || scriptype == 'PE' || scriptype == 'FUT';
+        let scripType = scrip[scrip.length - 1];
+        let isFO = scripType == 'CE' || scripType == 'PE' || scripType == 'FUT';
         if (!isFO) return stringSymbol;
         var ex;
         //insert year in ce/pe
-        scrip = this.insertYear(scrip, scriptype);
+        scrip = this.insertYear(scrip, scripType);
 
         //convert month as per weekly/monthly option
-        if (scriptype == 'CE' || scriptype == 'PE') {
+        if (scripType == 'CE' || scripType == 'PE') {
 
-            //isweekly
+            //is weekly
             if (this.isNumeric(scrip[1])) {
                 //YEAR MONTHINDEX DATE STRIKE CE/PE
                 //2021 1 07 14000 CE
                 var monthIndex = months.findIndex(element => element === scrip[2]);
-                ex = `${scrip[3]}${monthIndex}` + `0${scrip[1]}`.slice(-2) + `${scrip[4]}${scrip[5]}`;
+                ex = `${scrip[3]}${monthIndex}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
             } else {
-                ex = `${scrip[2]}${scrip[1]}${scrip[3]}${scrip[4]}`;
+                ex = `${scrip[2]}${scrip[1]}${Number(scrip[3])}${scrip[4]}`;
             }
         } else {
             ex = `${scrip[2]}${scrip[1]}FUT`;

@@ -1,4 +1,4 @@
-const _udf = require('../node-udf.js');
+const _udf = require('../index');
 
 let udf = new _udf();
 
@@ -24,7 +24,7 @@ const insertInToArray = () => {
 }
 
 const convertToTradingSymbol = () => {
-    let output = udf.convertToTradingSymbol('CRUDEOIL OCT FUT');
+    let output = udf.convertToTradingSymbol('USDINR AUG 74.50 PE');
     console.log(output);
 }
 
@@ -74,3 +74,5 @@ For a description of the Bot API, see this page: https://core.telegram.org/bots/
 parseBOTToken = () => udf.parseBOTToken(msg)
 
 // parseBOTToken();
+
+convertToTradingSymbol()

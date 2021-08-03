@@ -20,7 +20,7 @@
     "telegraf": "^3.38.0",
     "unzipper": "^0.10.11",
     "axios": "^0.21.1",
-    "csvtojson":"^2.0.10"
+    "csvtojson": "^2.0.10"
   },
   "install": "npm run build",
   "directories": {

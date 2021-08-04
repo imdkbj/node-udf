@@ -66,7 +66,7 @@ class ConvertToSymbol extends StringUDF {
                 //YEAR MONTHINDEX DATE STRIKE CE/PE
                 //2021 1 07 14000 CE
                 var monthIndex = months.findIndex(element => element === scrip[2]);
-                ex = `${scrip[3]}${monthIndex}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
+                ex = `${scrip[3]}${Number(monthIndex)}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
             } else {
                 ex = `${scrip[2]}${scrip[1]}${Number(scrip[3])}${scrip[4]}`;
             }

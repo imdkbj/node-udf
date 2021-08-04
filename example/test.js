@@ -24,7 +24,7 @@ const insertInToArray = () => {
 }
 
 const convertToTradingSymbol = () => {
-    let output = udf.convertToTradingSymbol('USDINR AUG 74.50 PE');
+    let output = udf.convertToTradingSymbol('USDINR 6 AUG 74.25 PE');
     console.log(output);
 }
 

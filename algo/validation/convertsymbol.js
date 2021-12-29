@@ -66,7 +66,9 @@ class ConvertToSymbol extends StringUDF {
             if (this.isNumeric(scrip[1])) {
                 //YEAR MONTH_first_letter DATE STRIKE CE/PE
                 //2021 J 07 14000 CE
-                ex = `${scrip[3]}${scrip[2].slice(0, 1)}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
+                // ex = `${scrip[3]}${scrip[2].slice(0, 1)}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
+                //06 JAN 22 19000 PE
+                ex = `0${scrip[1]}`.slice(-2) + `${scrip[2]}` + `${scrip[3]}` + `${Number(scrip[4])}${scrip[5]}`;
             } else {
                 ex = `${scrip[2]}${scrip[1]}${Number(scrip[3])}${scrip[4]}`;
             }

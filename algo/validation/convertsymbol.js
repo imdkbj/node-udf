@@ -49,8 +49,6 @@ class ConvertToSymbol extends StringUDF {
         const months = ['M', "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
         let scrip = stringSymbol.toUpperCase().split(' ');
-        console.log(scrip)
-
         //find fut/ce/pe
         let scripType = scrip[scrip.length - 1];
         let isFO = scripType == 'CE' || scripType == 'PE' || scripType == 'FUT';
@@ -58,6 +56,8 @@ class ConvertToSymbol extends StringUDF {
         var ex;
         //insert year in ce/pe
         scrip = this.insertYear(scrip, scripType);
+
+        console.log(scrip)
 
         //convert month as per weekly/monthly option
         if (scripType == 'CE' || scripType == 'PE') {
@@ -72,7 +72,7 @@ class ConvertToSymbol extends StringUDF {
 
                 // 22 1  06 16900 PE
 
-                ex = `${scrip[3].slice(-2)}${months.indexOf(scrip[2])}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
+                ex = `${String(scrip[3]).slice(-2)}${months.indexOf(scrip[2])}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
             } else {
                 ex = `${scrip[2]}${scrip[1]}${Number(scrip[3])}${scrip[4]}`;
             }

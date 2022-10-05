@@ -57,8 +57,6 @@ class ConvertToSymbol extends StringUDF {
         //insert year in ce/pe
         scrip = this.insertYear(scrip, scripType);
 
-        console.log(scrip)
-
         //convert month as per weekly/monthly option
         if (scripType == 'CE' || scripType == 'PE') {
 
@@ -66,13 +64,13 @@ class ConvertToSymbol extends StringUDF {
             if (this.isNumeric(scrip[1])) {
                 //YEAR MONTH_first_letter DATE STRIKE CE/PE
                 //2021 J 07 14000 CE
-                // ex = `${scrip[3]}${scrip[2].slice(0, 1)}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
+                ex = `${scrip[3]}${scrip[2].slice(0, 1)}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
                 //06 JAN 22 19000 PE
                 // ex = `0${scrip[1]}`.slice(-2) + `${scrip[2]}` + `${scrip[3]}` + `${Number(scrip[4])}${scrip[5]}`;
 
                 // 22 1  06 16900 PE
 
-                ex = `${String(scrip[3]).slice(-2)}${months.indexOf(scrip[2])}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
+                // ex = `${String(scrip[3]).slice(-2)}${months.indexOf(scrip[2])}` + `0${scrip[1]}`.slice(-2) + `${Number(scrip[4])}${scrip[5]}`;
             } else {
                 ex = `${scrip[2]}${scrip[1]}${Number(scrip[3])}${scrip[4]}`;
             }

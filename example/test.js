@@ -24,7 +24,7 @@ const insertInToArray = () => {
 }
 
 const convertToTradingSymbol = () => {
-    let output = udf.convertToTradingSymbol('NIFTY 6 JAN 22 16900 PE');
+    let output = udf.convertToTradingSymbol('NIFTY 6 oct 22 16900 CE');
     // let output = udf.convertToTradingSymbol('NIFTY OCT 18000 PE');
     console.log(output);
 }

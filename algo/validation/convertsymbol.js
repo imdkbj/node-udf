@@ -6,7 +6,7 @@ class ConvertToSymbol extends StringUDF {
   }
 
   insertYear = (scrip, scripType) => {
-    var _year = 22;
+    var _year = 23;
 
     let year_index = scripType == "FUT" ? -2 : -3;
     let oldYear = scrip.slice(year_index, year_index + 1)[0];

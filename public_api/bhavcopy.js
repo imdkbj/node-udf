@@ -366,7 +366,8 @@ class BhavCopy {
       return Promise.all(promiseArray)
         .then((array) => {
           let { message } = array[0];
-          if (message != undefined) return reject(message);
+          if (!this.isMultiplesFile && message != undefined)
+            return reject(message);
           const newArray = array.filter(
             (value) => Object.keys(value).length !== 0
           );

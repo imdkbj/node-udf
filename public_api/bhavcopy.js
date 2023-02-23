@@ -8,18 +8,15 @@ class BhavCopy {
   constructor(options = {}) {
     this.request = require("request");
     this.fs = require("fs");
-    const {
-      dir,
-      type
-    } = options;
+    const { dir, type } = options;
     this.customDir = dir && dir !== undefined && dir !== "undefined" ? dir : "";
     this.fileType =
       type &&
-        type !== undefined &&
-        type !== "undefined" &&
-        this.__validateFileType().indexOf(type) !== -1 ?
-        type :
-        "json";
+      type !== undefined &&
+      type !== "undefined" &&
+      this.__validateFileType().indexOf(type) !== -1
+        ? type
+        : "json";
     this.isMultiplesFile = false;
   }
 
@@ -62,7 +59,7 @@ class BhavCopy {
       "SEP",
       "OCT",
       "NOV",
-      "DEC"
+      "DEC",
     ];
     return monthArray;
   }
@@ -89,7 +86,7 @@ class BhavCopy {
   __daysCode() {
     let daysArray = [];
     for (let i = 1; i <= 31; i++) {
-      let day = i.toString().padStart(2, '0');
+      let day = i.toString().padStart(2, "0");
       daysArray.push(day);
     }
     return daysArray;
@@ -120,7 +117,6 @@ class BhavCopy {
     return path;
   }
 
-
   /**
    * Generate bhav files paths from NSE server
    *
@@ -130,21 +126,16 @@ class BhavCopy {
    * @return allFilesPathInMonth
    */
   __generateFileNames(criteria) {
-    const {
-      month,
-      year,
-      day,
-      isfo
-    } = criteria;
+    const { month, year, day, isfo } = criteria;
     // https://archives.nseindia.com/content/historical/EQUITIES/2021/JAN/cm01JAN2021bhav.csv.zip
     const nseURL = "https://archives.nseindia.com/content/historical/";
-    const bhav_FO_Cash = isfo ? 'fo' : 'cm';
+    const bhav_FO_Cash = isfo ? "fo" : "cm";
     const baseUrl = isfo ? "DERIVATIVES/" : "EQUITIES/";
 
     const allFilesPathInMonth = [];
     if (!day || day === undefined) {
       for (let i = 1; i <= 31; i++) {
-        let day = i.toString().padStart(2, '0');
+        let day = i.toString().padStart(2, "0");
 
         let fileName = bhav_FO_Cash + day + month + year + "bhav.csv.zip";
         let url = nseURL + baseUrl + year + "/" + month + "/" + fileName;
@@ -160,7 +151,6 @@ class BhavCopy {
     }
     return allFilesPathInMonth;
   }
-
 
   /**
    * Configure file url to get data from NSE server
@@ -181,26 +171,38 @@ class BhavCopy {
 
       return new Promise((resolve, reject) => {
         return this.__callNSEforFile(fileName)
-          .then(streamObj => {
-            if (streamObj && typeof streamObj === "object" && Object.keys(streamObj).length) {
-              streamObj.on("response", response => {
+          .then((streamObj) => {
+            if (
+              streamObj &&
+              typeof streamObj === "object" &&
+              Object.keys(streamObj).length
+            ) {
+              streamObj.on("response", (response) => {
                 if (response.statusCode === 200) {
                   //const unzip = require("unzip");
-                  const unzipper = require('unzipper');
+                  const unzipper = require("unzipper");
                   if (this.fileType === "csv") {
-                    streamObj.pipe(unzipper.Extract({
-                      path: this.baseDir
-                    }));
+                    streamObj.pipe(
+                      unzipper.Extract({
+                        path: this.baseDir,
+                      })
+                    );
                     return resolve({
-                      message: 'done ' + originalFileName + " has been downloaded successfully for the date " + fileDate
+                      message:
+                        "done " +
+                        originalFileName +
+                        " has been downloaded successfully for the date " +
+                        fileDate,
                     });
                   } else if (this.fileType === "json") {
                     streamObj
-                      .pipe(unzipper.Extract({
-                        path: this.baseDir
-                      }))
+                      .pipe(
+                        unzipper.Extract({
+                          path: this.baseDir,
+                        })
+                      )
                       .on("error", () => {
-                        return reject('Error in bhavcopy download.')
+                        return reject("Error in bhavcopy download.");
                       })
                       .on("close", async () => {
                         try {
@@ -218,21 +220,28 @@ class BhavCopy {
                         }
                       });
                   } else if (this.fileType === "zip") {
-                    streamObj.pipe(this.fs.createWriteStream(this.baseDir + "/" + originalFileName));
+                    streamObj.pipe(
+                      this.fs.createWriteStream(
+                        this.baseDir + "/" + originalFileName
+                      )
+                    );
                     return resolve({
-                      message: 'done ' + originalFileName +
+                      message:
+                        "done " +
+                        originalFileName +
                         " has been downloaded successfully for the date " +
-                        fileDate
+                        fileDate,
                     });
                   }
                 } else if (response.statusCode === 403) {
                   return resolve({
-                    message: "Access Denied: for the file on date " + fileDate
+                    message: "Access Denied: for the file on date " + fileDate,
                   });
                 } else {
                   if (this.isMultiplesFile !== true) {
                     return resolve({
-                      message: "Bhavcopy is not available for the date: " + fileDate
+                      message:
+                        "Bhavcopy is not available for the date: " + fileDate,
                     });
                   }
                   return resolve({});
@@ -241,17 +250,18 @@ class BhavCopy {
 
               setTimeout(() => {
                 return resolve({
-                  message: "Bhavcopy is not available for the date: " + fileDate
+                  message:
+                    "Bhavcopy is not available for the date: " + fileDate,
                 });
               }, 5000);
-
             } else {
               return reject({
-                message: "Server is temporarily down. Please try after some time."
+                message:
+                  "Server is temporarily down. Please try after some time.",
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             return Promise.reject(err);
           });
       });
@@ -269,8 +279,8 @@ class BhavCopy {
       url: reqUrl,
       method: "GET",
       headers: {
-        "Cache-Control": "no-cache"
-      }
+        "Cache-Control": "no-cache",
+      },
     };
     return new Promise((resolve, reject) => {
       try {
@@ -292,11 +302,7 @@ class BhavCopy {
    */
   bhavdownload(reqObject, isfo = false) {
     return new Promise((resolve, reject) => {
-      let {
-        month,
-        year,
-        day
-      } = reqObject;
+      let { month, year, day } = reqObject;
 
       if (
         month === undefined ||
@@ -305,7 +311,7 @@ class BhavCopy {
         this.__monthsCode().indexOf(month) === -1
       ) {
         return reject({
-          message: "Invalid month name"
+          message: "Invalid month name",
         });
       }
       if (
@@ -315,20 +321,20 @@ class BhavCopy {
         this.__yearsCode().indexOf(parseInt(year)) === -1
       ) {
         return reject({
-          message: "Invalid year name"
+          message: "Invalid year name",
         });
       }
       if (day !== undefined && day !== "" && day !== null) {
         day = parseInt(day);
         if (typeof day !== "number") {
           return reject({
-            message: "Invalid day specified"
+            message: "Invalid day specified",
           });
         }
-        const newday = parseInt(day).toString().padStart(2, '0');
+        const newday = parseInt(day).toString().padStart(2, "0");
         if (this.__daysCode().indexOf(newday) === -1) {
           return reject({
-            message: "Invalid day specified"
+            message: "Invalid day specified",
           });
         }
         day = newday;
@@ -344,24 +350,29 @@ class BhavCopy {
         month,
         year,
         day,
-        isfo
+        isfo,
       });
       const promiseArray = [];
 
-      if (Array.isArray(generateFileNamesArray) && generateFileNamesArray.length) {
-        generateFileNamesArray.forEach((item, index) => promiseArray.push(this.__getBhavCopyFromNSE(item)));
+      if (
+        Array.isArray(generateFileNamesArray) &&
+        generateFileNamesArray.length
+      ) {
+        generateFileNamesArray.forEach((item, index) =>
+          promiseArray.push(this.__getBhavCopyFromNSE(item))
+        );
       }
 
       return Promise.all(promiseArray)
-        .then(array => {
-          let {
-            message
-          } = array[0];
+        .then((array) => {
+          let { message } = array[0];
           if (message != undefined) return reject(message);
-          const newArray = array.filter(value => Object.keys(value).length !== 0);
+          const newArray = array.filter(
+            (value) => Object.keys(value).length !== 0
+          );
           return resolve(newArray);
         })
-        .catch(err => {
+        .catch((err) => {
           return reject(err);
         });
     });
